@@ -39,7 +39,13 @@ namespace NFine.Application.Shop
             else
             {
                 saleEntity.CreateTime = DateTime.Now;
-                saleEntity.F_CreatorTime = DateTime.Now;
+                //saleEntity.F_CreatorTime = DateTime.Now;
+                saleEntity.SellPrice = 10;
+                saleEntity.SellTy = 10;
+                saleEntity.ULevel = 10;
+                saleEntity.UpLevel = 10;
+                saleEntity.CreateID = 10;
+                saleEntity.SellID = 10;
 
                 saleEntity.Create();
                 service.Insert(saleEntity);
@@ -49,7 +55,7 @@ namespace NFine.Application.Shop
 
         public void DeleteForm(string keyValue)
         {
-            service.Delete(t => t.F_Id == keyValue);            
+            service.Delete(t => t.SellID.ToString() == keyValue);            
         }
         //public void SubmitForm(UserEntity userEntity, UserLogOnEntity userLogOnEntity, string keyValue)
         //{

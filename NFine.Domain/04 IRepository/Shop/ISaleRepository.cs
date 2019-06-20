@@ -13,4 +13,8 @@ namespace NFine.Domain.IRepository.Shop
     {
        
     }
+    public interface ISTAppSysRepository : IRepositoryBase<STAppSysEntity>
+    {
+
+    }
 }

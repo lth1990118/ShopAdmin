@@ -7,6 +7,7 @@
 using NFine.Code;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Linq;
@@ -65,7 +66,28 @@ namespace NFine.Data
         }
         public TEntity FindEntity(object keyValue)
         {
-            return dbcontext.Set<TEntity>().Find(keyValue);
+            object key = null;
+            Type t = typeof(TEntity);
+            PropertyInfo[] propertyInfos= t.GetProperties();
+            foreach (PropertyInfo p in propertyInfos)
+            {
+                Attribute attribute = p.GetCustomAttribute(typeof(KeyAttribute));
+                if (attribute != null) {
+                    if (p.PropertyType.FullName == typeof(long).FullName)
+                    {
+                        key = Convert.ToInt64( keyValue);
+                    }
+                    else if (p.PropertyType.FullName == typeof(int).FullName)
+                    {
+                        key = Convert.ToInt32(keyValue);
+                    }
+                    else {
+                        key = (string)keyValue;
+                    }
+                }
+            }            
+
+            return dbcontext.Set<TEntity>().Find(key);
         }
         public TEntity FindEntity(Expression<Func<TEntity, bool>> predicate)
         {

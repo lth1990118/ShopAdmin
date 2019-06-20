@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace NFine.Mapping.Shop
 {
-    public class SaleMap : EntityTypeConfiguration<SaleEntity>
+    public class STAppSysMap : EntityTypeConfiguration<STAppSysEntity>
     {
-        public SaleMap()
+        public STAppSysMap()
         {
-            this.ToTable("BTSell");
-            this.HasKey(t => t.SellID);
+            this.ToTable("STAppSys");
+            this.HasKey(t => t.SysCode);
         }
     }
 }

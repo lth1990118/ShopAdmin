@@ -126,6 +126,7 @@
     <Compile Include="Areas\ReportManage\Controllers\HighchartsController.cs" />
     <Compile Include="Areas\ReportManage\ReportManageAreaRegistration.cs" />
     <Compile Include="Areas\Shop\Controllers\SaleController.cs" />
+    <Compile Include="Areas\Shop\Controllers\STAppSysController.cs" />
     <Compile Include="Areas\Shop\ShopAreaResistration.cs" />
     <Compile Include="Areas\SystemManage\Controllers\AreaController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\DutyController.cs" />
@@ -620,6 +621,8 @@
     <Content Include="Areas\Shop\Views\Sale\Index.cshtml" />
     <Content Include="Areas\Shop\Views\Web.config" />
     <Content Include="Areas\Shop\Views\Sale\Form.cshtml" />
+    <Content Include="Areas\Shop\Views\STAppSys\Index.cshtml" />
+    <Content Include="Areas\Shop\Views\STAppSys\Form.cshtml" />
     <None Include="Properties\PublishProfiles\NFine.Framework.Release.pubxml" />
   </ItemGroup>
   <PropertyGroup>

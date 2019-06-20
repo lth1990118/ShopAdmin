@@ -8,20 +8,17 @@ using System.Threading.Tasks;
 
 namespace NFine.Domain._03_Entity.Shop
 {
-    public class SaleEntity : IEntity<SaleEntity>//, ICreationAudited, IDeleteAudited, IModificationAudited
+   
+    public class STAppSysEntity : IEntity<SaleEntity>//, ICreationAudited, IDeleteAudited, IModificationAudited
     {
-        public int? UserID { get; set; }
-        public int? SellTy { get; set; }
         [Key]
         [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.None)]
-        public int SellID { get; set; }
-        public int? ULevel { get; set; }
-        public decimal SellPrice { get; set; }
-        public int? SellNum { get; set; }
-        public int? UpLevel { get; set; }
-        public int? CreateID { get; set; }
-        public DateTime? CreateTime { get; set; }
-        public int BonusFlag { get; set; }
+        public string SysCode { get; set; }
+
+        public string LngCode { get; set; }
+        public string SysName { get; set; }
+        public string SysNameCN { get; set; }
+        public decimal ExchRate { get; set; }
 
         //public string F_Id { get ; set; }
         //public string F_CreatorUserId { get; set; }

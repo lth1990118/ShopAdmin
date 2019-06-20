@@ -14,4 +14,8 @@ namespace NFine.Repository.Shop
     {
        
     }
+    public class STAppSysRepository : RepositoryBase<STAppSysEntity>, ISTAppSysRepository
+    {
+
+    }
 }
