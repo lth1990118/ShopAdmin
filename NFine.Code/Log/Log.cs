@@ -6,6 +6,7 @@
 *********************************************************************************/
 using log4net;
 using System;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace NFine.Code
@@ -35,10 +36,10 @@ namespace NFine.Code
             this.logger.Warn(message);
         }
 
-        public void LogAll(Action actLogFile,Action action)
+        public void LogAll(Task actLogFile, Task action)
         {
-            actLogFile.Invoke();
-            action.Invoke();
+            actLogFile.Start();
+            action.Start();
         }
     }
 }
