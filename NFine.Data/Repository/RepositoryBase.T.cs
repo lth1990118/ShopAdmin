@@ -69,6 +69,7 @@ namespace NFine.Data
             object key = null;
             Type t = typeof(TEntity);
             PropertyInfo[] propertyInfos= t.GetProperties();
+            bool flag = true;
             foreach (PropertyInfo p in propertyInfos)
             {
                 Attribute attribute = p.GetCustomAttribute(typeof(KeyAttribute));
@@ -84,9 +85,13 @@ namespace NFine.Data
                     else {
                         key = (string)keyValue;
                     }
+                    flag = false;
+                    break;
                 }
-            }            
-
+            }
+            if (flag) {
+                key = (string)keyValue;
+            }
             return dbcontext.Set<TEntity>().Find(key);
         }
         public TEntity FindEntity(Expression<Func<TEntity, bool>> predicate)

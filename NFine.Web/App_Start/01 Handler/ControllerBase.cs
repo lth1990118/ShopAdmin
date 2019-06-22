@@ -1,4 +1,9 @@
-﻿using NFine.Code;
+﻿using NFine.Application.SystemSecurity;
+using NFine.Code;
+using NFine.Domain.Entity.SystemSecurity;
+using System;
+using System.Collections.Specialized;
+using System.Text;
 using System.Web.Mvc;
 
 namespace NFine.Web
@@ -30,6 +35,45 @@ namespace NFine.Web
         }
         protected virtual ActionResult Success(string message)
         {
+            try
+            {
+                FileLog.LogAll(() => { FileLog.Info(message); }, () =>
+                {
+                    LogApp logApp = new LogApp();
+                    LogEntity logEntity = new LogEntity();
+                    logEntity.F_ModuleName = this.HttpContext.Request.Url.AbsoluteUri;
+                    logEntity.F_Type = this.HttpContext.Request.Path;
+                    logEntity.F_Result = true;
+                    StringBuilder description = new StringBuilder();
+                    foreach (string item in this.HttpContext.Request.QueryString.Keys)
+                    {
+                        description.Append(",");
+                        description.Append("\"" + item + "\"");
+                        description.Append(":");
+                        description.Append("\"" + this.HttpContext.Request.QueryString[item] + "\"");
+                    }
+                    if (description.Length > 0)
+                    {
+                        description.Remove(0, 1);
+                    }
+                    foreach (string item in this.HttpContext.Request.Form.Keys)
+                    {
+                        description.Append(",");
+                        description.Append("\"" + item + "\"");
+                        description.Append(":");
+                        description.Append("\"" + this.HttpContext.Request.Form[item] + "\"");
+                    }
+                    if (description.Length > 0)
+                    {
+                        description.Remove(0, 1);
+                    }
+                    description.Append("}");
+                    description.Insert(0, "{");
+                    logEntity.F_Description = description.ToString();
+                    logApp.WriteDbLog(logEntity);
+                });
+            }
+            catch { }
             return Content(new AjaxResult { state = ResultType.success.ToString(), message = message }.ToJson());
         }
         protected virtual ActionResult Success(string message, object data)

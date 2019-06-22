@@ -49,6 +49,6 @@ namespace NFine.Web.Areas.Shop.Controllers
         {
             saleApp.DeleteForm(keyValue);
             return Success("删除成功。");
-        }        
+        }
     }
 }

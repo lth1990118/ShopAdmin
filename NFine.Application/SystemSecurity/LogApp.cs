@@ -87,8 +87,10 @@ namespace NFine.Application.SystemSecurity
         public void WriteDbLog(LogEntity logEntity)
         {
             logEntity.F_Id = Common.GuId();
+            logEntity.F_Account = OperatorProvider.Provider.GetCurrent().UserCode;
+            logEntity.F_NickName = OperatorProvider.Provider.GetCurrent().UserName;
             logEntity.F_Date = DateTime.Now;
-            logEntity.F_IPAddress = "117.81.192.182";
+            logEntity.F_IPAddress = Net.Ip;
             logEntity.F_IPAddressName = Net.GetLocation(logEntity.F_IPAddress);
             logEntity.Create();
             service.Insert(logEntity);
