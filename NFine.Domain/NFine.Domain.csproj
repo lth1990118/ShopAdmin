@@ -46,6 +46,7 @@
     <Compile Include="01 Infrastructure\IModificationAudited.cs" />
     <Compile Include="02 ViewModel\ItemMasterViewModel.cs" />
     <Compile Include="03 Entity\Shop\ItemMasterEntity.cs" />
+    <Compile Include="03 Entity\Shop\ItemMasterPicEntity.cs" />
     <Compile Include="03 Entity\Shop\SaleEntity.cs" />
     <Compile Include="03 Entity\Shop\STAppSysEntity.cs" />
     <Compile Include="03 Entity\SystemManage\AreaEntity.cs" />
