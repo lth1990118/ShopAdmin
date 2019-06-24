@@ -9,6 +9,7 @@ using NFine.Data;
 using NFine.Domain.Entity.SystemManage;
 using NFine.Domain.IRepository.SystemManage;
 using NFine.Repository.SystemManage;
+using System;
 
 namespace NFine.Repository.SystemManage
 {
@@ -18,8 +19,8 @@ namespace NFine.Repository.SystemManage
         {
             using (var db = new RepositoryBase().BeginTrans())
             {
-                db.Delete<UserEntity>(t => t.F_Id == keyValue);
-                db.Delete<UserLogOnEntity>(t => t.F_UserId == keyValue);
+                db.Delete<UserEntity>(t => t.F_Id ==  keyValue.ToInt());
+                db.Delete<UserLogOnEntity>(t => t.F_UserId == keyValue.ToInt());
                 db.Commit();
             }
         }
@@ -37,6 +38,7 @@ namespace NFine.Repository.SystemManage
                     userLogOnEntity.F_UserId = userEntity.F_Id;
                     userLogOnEntity.F_UserSecretkey = Md5.md5(Common.CreateNo(), 16).ToLower();
                     userLogOnEntity.F_UserPassword = Md5.md5(DESEncrypt.Encrypt(Md5.md5(userLogOnEntity.F_UserPassword, 32).ToLower(), userLogOnEntity.F_UserSecretkey).ToLower(), 32).ToLower();
+                    
                     db.Insert(userEntity);
                     db.Insert(userLogOnEntity);
                 }

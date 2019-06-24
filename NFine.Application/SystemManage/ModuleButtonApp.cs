@@ -46,6 +46,7 @@ namespace NFine.Application.SystemManage
         {
             if (!string.IsNullOrEmpty(keyValue))
             {
+                moduleButtonEntity.F_Id = keyValue;
                 moduleButtonEntity.Modify(keyValue);
                 service.Update(moduleButtonEntity);
             }

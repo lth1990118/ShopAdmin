@@ -1,6 +1,7 @@
 ﻿using NFine.Application.SystemSecurity;
 using NFine.Code;
 using NFine.Domain.Entity.SystemSecurity;
+using System;
 using System.Text;
 using System.Web.Mvc;
 
@@ -26,42 +27,50 @@ namespace NFine.Web
             if (context == null)
                 return;
             var log = LogFactory.GetLogger(context.Controller.ToString());
-
-            log.LogAll(new System.Threading.Tasks.Task(() => { log.Error(context.Exception); }), new System.Threading.Tasks.Task(() =>
+            
+            try
             {
-                LogApp logApp = new LogApp();
-                LogEntity logEntity = new LogEntity();
-                logEntity.F_ModuleName = context.HttpContext.Request.Url.AbsoluteUri;
-                logEntity.F_Type = context.HttpContext.Request.Path;
-                logEntity.F_Result = false;
-                StringBuilder description = new StringBuilder();
-                foreach (string item in context.HttpContext.Request.QueryString.Keys)
+                log.LogAll(() => { log.Error(context.Exception); }, () =>
                 {
-                    description.Append(",");
-                    description.Append("\"" + item + "\"");
-                    description.Append(":");
-                    description.Append("\"" + context.HttpContext.Request.QueryString[item] + "\"");
-                }
-                if (description.Length > 0)
-                {
-                    description.Remove(0, 1);
-                }
-                foreach (string item in context.HttpContext.Request.Form.Keys)
-                {
-                    description.Append(",");
-                    description.Append("\"" + item + "\"");
-                    description.Append(":");
-                    description.Append("\"" + context.HttpContext.Request.Form[item] + "\"");
-                }
-                if (description.Length > 0)
-                {
-                    description.Remove(0, 1);
-                }
-                description.Append("}");
-                description.Insert(0, "{");
-                logEntity.F_Description = description.ToString();
-                logApp.WriteDbLog(logEntity);
-            }));
+                    LogApp logApp = new LogApp();
+                    LogEntity logEntity = new LogEntity();
+                    logEntity.F_ModuleName = context.HttpContext.Request.Url.AbsoluteUri;
+                    logEntity.F_Type = context.HttpContext.Request.Path;
+                    logEntity.F_Result = false;
+                    logEntity.F_Account = OperatorProvider.Provider.GetCurrent().UserCode;
+                    logEntity.F_NickName = OperatorProvider.Provider.GetCurrent().UserName;
+                    StringBuilder description = new StringBuilder();
+                    foreach (string item in context.HttpContext.Request.QueryString.Keys)
+                    {
+                        description.Append(",");
+                        description.Append("\"" + item + "\"");
+                        description.Append(":");
+                        description.Append("\"" + context.HttpContext.Request.QueryString[item] + "\"");
+                    }
+                    if (description.Length > 0)
+                    {
+                        description.Remove(0, 1);
+                    }
+                    foreach (string item in context.HttpContext.Request.Form.Keys)
+                    {
+                        description.Append(",");
+                        description.Append("\"" + item + "\"");
+                        description.Append(":");
+                        description.Append("\"" + context.HttpContext.Request.Form[item] + "\"");
+                    }
+                    if (description.Length > 0)
+                    {
+                        description.Remove(0, 1);
+                    }
+                    description.Append("}");
+                    description.Insert(0, "{");
+                    logEntity.F_Description = description.ToString();
+                    logApp.WriteDbLog(logEntity);
+                });
+            }
+            catch (Exception ex){
+
+            }
         }
     }
 }

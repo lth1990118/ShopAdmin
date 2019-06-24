@@ -17,4 +17,8 @@ namespace NFine.Domain.IRepository.Shop
     {
 
     }
+    public interface IItemMasterRepository : IRepositoryBase<ItemMasterEntity>
+    {
+
+    }
 }

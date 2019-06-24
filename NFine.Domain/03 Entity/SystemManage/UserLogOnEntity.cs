@@ -5,13 +5,17 @@
  * Website：http://www.nfine.cn
 *********************************************************************************/
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NFine.Domain.Entity.SystemManage
 {
     public class UserLogOnEntity
     {
-        public string F_Id { get; set; }
-        public string F_UserId { get; set; }
+        [Key]
+        [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.None)]
+        public int F_Id { get; set; }
+        public int F_UserId { get; set; }
         public string F_UserPassword { get; set; }
         public string F_UserSecretkey { get; set; }
         public DateTime? F_AllowStartTime { get; set; }

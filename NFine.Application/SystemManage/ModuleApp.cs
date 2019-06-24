@@ -47,6 +47,7 @@ namespace NFine.Application.SystemManage
             else
             {
                 moduleEntity.Create();
+                moduleEntity.F_Id = Common.GuId();
                 service.Insert(moduleEntity);
             }
         }

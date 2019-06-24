@@ -36,10 +36,10 @@ namespace NFine.Code
             this.logger.Warn(message);
         }
 
-        public void LogAll(Task actLogFile, Task action)
+        public void LogAll(Action actLogFile, Action action)
         {
-            actLogFile.Start();
-            action.Start();
+            actLogFile.Invoke();
+            action.Invoke();
         }
     }
 }

@@ -5,12 +5,16 @@
  * Website：http://www.nfine.cn
 *********************************************************************************/
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NFine.Domain.Entity.SystemManage
 {
     public class UserEntity : IEntity<UserEntity>, ICreationAudited, IDeleteAudited, IModificationAudited
     {
-        public string F_Id { get; set; }
+        [Key]
+        [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
+        public int F_Id { get; set; }
         public string F_Account { get; set; }
         public string F_RealName { get; set; }
         public string F_NickName { get; set; }

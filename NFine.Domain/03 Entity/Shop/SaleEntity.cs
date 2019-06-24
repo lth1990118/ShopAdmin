@@ -13,7 +13,7 @@ namespace NFine.Domain._03_Entity.Shop
         public int? UserID { get; set; }
         public int? SellTy { get; set; }
         [Key]
-        [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
         public int SellID { get; set; }
         public int? ULevel { get; set; }
         public decimal SellPrice { get; set; }

@@ -12,7 +12,7 @@ namespace NFine.Web.Areas.Shop.Controllers
     public class SaleController : ControllerBase
     {
         private SaleApp saleApp = new SaleApp();
-
+        
         [HttpGet]
         [HandlerAjaxOnly]
         public ActionResult GetGridJson(Pagination pagination, string keyword)

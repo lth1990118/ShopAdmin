@@ -123,6 +123,7 @@
     <Compile Include="Areas\ReportManage\Controllers\EchartsController.cs" />
     <Compile Include="Areas\ReportManage\Controllers\HighchartsController.cs" />
     <Compile Include="Areas\ReportManage\ReportManageAreaRegistration.cs" />
+    <Compile Include="Areas\Shop\Controllers\ItemMasterController.cs" />
     <Compile Include="Areas\Shop\Controllers\SaleController.cs" />
     <Compile Include="Areas\Shop\Controllers\STAppSysController.cs" />
     <Compile Include="Areas\Shop\ShopAreaResistration.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="Controllers\ClientsDataController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\PicController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -380,6 +382,11 @@
     <Content Include="Content\js\zsign\jquery.zsign.css" />
     <Content Include="Content\js\zsign\jquery.zsign.js" />
     <Content Include="Content\js\zsign\signet.gif" />
+    <Content Include="Content\uploadify\jquery.uploadify-3.1.js" />
+    <Content Include="Content\uploadify\jquery.uploadify-3.1.min.js" />
+    <Content Include="Content\uploadify\uploadify-cancel.png" />
+    <Content Include="Content\uploadify\uploadify.css" />
+    <Content Include="Content\uploadify\uploadify.swf" />
     <Content Include="Global.asax" />
     <Content Include="Index.htm" />
     <Content Include="Web.config" />
@@ -621,8 +628,11 @@
     <Content Include="Areas\Shop\Views\Sale\Form.cshtml" />
     <Content Include="Areas\Shop\Views\STAppSys\Index.cshtml" />
     <Content Include="Areas\Shop\Views\STAppSys\Form.cshtml" />
+    <Content Include="Areas\Shop\Views\ItemMaster\Form.cshtml" />
+    <Content Include="Areas\Shop\Views\ItemMaster\Index.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\NFine.Framework.Release.pubxml" />
+    <Content Include="Views\Pic\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

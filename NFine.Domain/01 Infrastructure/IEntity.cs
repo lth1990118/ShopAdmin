@@ -16,11 +16,11 @@ namespace NFine.Domain
             var entity = this as ICreationAudited;
             if (entity != null)
             {
-                entity.F_Id = Common.GuId();
+                //entity.F_Id = Common.GuId();
                 var LoginInfo = OperatorProvider.Provider.GetCurrent();
                 if (LoginInfo != null)
                 {
-                    entity.F_CreatorUserId = LoginInfo.UserId;
+                    entity.F_CreatorUserId = LoginInfo.UserId.ToString();
                 }
                 entity.F_CreatorTime = DateTime.Now;
             }
@@ -29,12 +29,11 @@ namespace NFine.Domain
         {
             var entity = this as IModificationAudited;
             if (entity != null)
-            {
-                entity.F_Id = keyValue;
+            {               
                 var LoginInfo = OperatorProvider.Provider.GetCurrent();
                 if (LoginInfo != null)
                 {
-                    entity.F_LastModifyUserId = LoginInfo.UserId;
+                    entity.F_LastModifyUserId = LoginInfo.UserId.ToString();
                 }
                 entity.F_LastModifyTime = DateTime.Now;
             }
@@ -47,7 +46,7 @@ namespace NFine.Domain
                 var LoginInfo = OperatorProvider.Provider.GetCurrent();
                 if (LoginInfo != null)
                 {
-                    entity.F_DeleteUserId = LoginInfo.UserId;
+                    entity.F_DeleteUserId = LoginInfo.UserId.ToString();
                 }
                 entity.F_DeleteTime = DateTime.Now;
                 entity.F_DeleteMark = true;

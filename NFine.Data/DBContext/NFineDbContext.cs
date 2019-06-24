@@ -35,7 +35,7 @@ namespace NFine.Data
                 dynamic configurationInstance = Activator.CreateInstance(type);
                 modelBuilder.Configurations.Add(configurationInstance);
             }
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);           
         }
     }
 }

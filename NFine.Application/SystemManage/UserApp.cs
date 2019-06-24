@@ -61,7 +61,7 @@ namespace NFine.Application.SystemManage
             {
                 if (userEntity.F_EnabledMark == true)
                 {
-                    UserLogOnEntity userLogOnEntity = userLogOnApp.GetForm(userEntity.F_Id);
+                    UserLogOnEntity userLogOnEntity = userLogOnApp.GetForm(userEntity.F_Id.ToString());
                     string dbPassword = Md5.md5(DESEncrypt.Encrypt(password.ToLower(), userLogOnEntity.F_UserSecretkey).ToLower(), 32).ToLower();
                     if (dbPassword == userLogOnEntity.F_UserPassword)
                     {

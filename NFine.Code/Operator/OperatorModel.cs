@@ -10,7 +10,7 @@ namespace NFine.Code
 {
     public class OperatorModel
     {
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         public string UserCode { get; set; }
         public string UserName { get; set; }
         public string UserPwd { get; set; }
