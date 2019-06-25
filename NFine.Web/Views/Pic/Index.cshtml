@@ -15,8 +15,8 @@
                 //按钮显示的文字
                 'buttonText': '上传图片',
                 //显示的高度和宽度，默认 height 30；width 120
-                //'height': 15,
-                //'width': 80,
+                'height': 80,
+                'width': 80,
                 //上传文件的类型  默认为所有文件    'All Files'  ;  '*.*'
                 //在浏览窗口底部的文件类型下拉菜单中显示的文本
                 'fileTypeDesc': 'Image Files',
@@ -39,10 +39,54 @@
                     else {
                         $.dialog.alert("导入提单成本费用异常：" + a.Message);
                     }
+                },
+                'onSelect': function (file) {
+                    alert('The file ' + file.name + ' was added to the queue.');
+                },
+                'onComplete': function (event, queueID, fileObj, response, data) {
+                    $('#image').attr("src", response);
+                    $('#image').show();
+                    $('#photo').attr("value", response);
                 }
             });
     });
-    $(function () {
+    function reviewUploadImg(obj) {
+        
+        for (var i = 0; i < obj.files.length; i++) {
+            var file = obj.files[i];
+            console.log(obj); console.log(file);
+            console.log("file.size = " + file.size);  //file.size 单位为byte
+
+            var reader = new FileReader();
+
+            //读取文件过程方法
+            reader.onloadstart = function (e) {
+                console.log("开始读取....");
+            }
+            reader.onprogress = function (e) {
+                console.log("正在读取中....");
+            }
+            reader.onabort = function (e) {
+                console.log("中断读取....");
+            }
+            reader.onerror = function (e) {
+                console.log("读取异常....");
+            }
+            reader.onload = function (e) {
+                console.log("成功读取....");
+                var contain = document.getElementById("contain")
+                var img = document.createElement("img");
+                img.height = 100;
+                img.width = 100;
+                img.src = e.target.result;
+                contain.appendChild(img);
+                //或者 img.src = this.result;  //e.target == this
+            }
+
+            reader.readAsDataURL(file);
+        }
+    }
+    @*$(function () {
         $('#file_upload').uploadify({
             'buttonImage': '@Url.Content("~/Content/uploadify/browse-btn.png")',
             'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")', //指定swf文件
@@ -70,13 +114,14 @@
                 alert('The file ' + file.name + ' finished processing.');
             }
         });
-    });
+    });*@
 </script>
 <div>
     @*用来作为文件队列区域*@
     <div id="fileQueue">
     </div>
-    <input type="file" id="file_upload" name="file_upload" />
+    <input type="file" id="file_upload" onchange="reviewUploadImg(this)" name="file_upload" />
+    <div id="contain" style="height:500px;width:500px;border:1px solid red"></div>
     <p>
         <a href="javascript:$('#file_upload').uploadify('upload');">上传第一个</a>
         <a href="javascript:$('#file_upload').uploadify('upload','*');">上传队列</a>

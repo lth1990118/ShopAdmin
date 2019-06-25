@@ -32,12 +32,6 @@ namespace NFine.Mapping.Shop
         {
             this.ToTable("CBO_ItemMaster");
             this.HasKey(t => t.F_ID);
-            this.HasMany(x=>x.listPic).WithMany(m => x.listPic).Map()
-                //this.HasMany(x => x.Orders).
-                //WithMany(x => x.InvolvedEmployees).
-                //Map(m => m.ToTable("EmployeeOrder").
-                //    MapLeftKey("EmployeeId").
-                //    MapRightKey("OrderId"));
         }
         
     }
