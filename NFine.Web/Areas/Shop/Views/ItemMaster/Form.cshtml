@@ -1,10 +1,51 @@
 ﻿@{
-                /**/
+    /**/
 
-                ViewBag.Title = "Form";
-                Layout = "~/Views/Shared/_Form.cshtml";
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form.cshtml";
 }
+<link href="~/Content/uploadify/uploadify.css" rel="stylesheet" />
+<style>
+    #contain > li {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        border: solid 1px #eee;
+    }
+
+    .imgDiv > img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .imgDiv {
+        display: inline-block;
+        position: relative;
+    }
+
+        .imgDiv .delete {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 20px;
+            height: 20px;
+            display: none;
+        }
+    .attr {
+        font-size: 12px;
+        line-height: 30px;
+        width: 60px;
+        padding: 0px;
+    }
+</style>
+@*<script src="~/Content/js/jquery/jquery-2.1.1.min.js"></script>*@
+<script src="~/Content/uploadify/jquery.uploadify-3.1.min.js"></script>
 <script>
+    var tempData = {
+        attrInfo: [],
+        picInfo: {}
+    };
     var keyValue = $.request("keyValue");
     $(function () {
         initControl();
@@ -19,10 +60,11 @@
                 }
             });
         }
+       
     })
     function initControl() {
-        $("#F_OrganizeId").bindSelect({
-            url: "/SystemManage/Organize/GetTreeSelectJson",
+        $("#F_OwerOrg").bindSelect({
+            url: "/Shop/STAppSys/GetTreeSelectJson",
         });
         $("#F_Type").bindSelect({
             url: "/SystemManage/ItemsData/GetSelectJson",
@@ -48,95 +90,236 @@
                 $next.show();
             }
         });
-        $("#permissionTree").treeview({
-            height: 444,
-            showcheck: true,
-            url: "/SystemManage/RoleAuthorize/GetPermissionTree",
-            param: { roleId: keyValue }
+        $('#addAttr').on('click', function (e, data) {
+            $.modalOpen({
+                id: "FormAttr",
+                title: "新增商品特性",
+                url: "/Shop/ItemMaster/FormAttr",
+                width: "400px",
+                height: "300px",
+                callBack: function (iframeId) {
+                    var result = top.frames[iframeId].submitForm();
+                    top.frames[iframeId].closeForm();
+                   
+                    appendAttr(result);
+                    tempData.attrInfo.push(result);
+                    console.log(tempData.attrInfo);
+                    moveEnter();
+                }
+            });
+        });
+        moveEnter();
+    }
+    function appendAttr(result) {
+        //<div class="btn btn-info attr">大小</div>
+        var div = document.createElement("div");
+        $(div).addClass("btn");
+        $(div).addClass("btn-info");
+        $(div).addClass("attr");
+        div.innerHTML = result.Value;
+        $(div).attr("attrid", result.ID);
+        $(div).attr("attrvalue", result.Value);
+        $("#attrContain").prepend(div);
+    }
+    function moveEnter() {
+        $(".attr").mouseenter(function () {            
+            this.innerHTML = "删除";
+        });
+        $(".attr").mouseleave(function () {
+            var attrID = $(this).attr("attrid");
+            this.innerHTML = $(this).attr("attrvalue");
+        });
+        $(".attr").mouseup(function () {
+            var attr = $(this);
+            $.modalConfirm("注：您确定要删除该项数据吗？", function (r) {
+                if (r) {
+                    $.loading(true, "正在删除");
+                    window.setTimeout(function () {
+                        $.modalMsg("删除成功", "success");
+                        var attrid = attr.attr("attrid");
+                        var len = tempData.attrInfo.length;
+                        for (var i = 0; i < len; i++) {
+                            if (tempData.attrInfo[i].id == attrid) {
+                                tempData.attrInfo.pop(tempData.attrInfo[i]);
+                            }
+                        }
+                        attr.remove();
+                        console.log(tempData.attrInfo);
+                        $.loading(false);
+                    }, 500);                    
+                }
+            })  
         });
     }
     function submitForm() {
         var postData = $("#form1").formSerialize();
-        postData["permissionIds"] = String($("#permissionTree").getCheckedNodes());
+        if ($('#contain .imgReview').length == 0) {
+            $.modalMsg("请上传至少一张商品图片！", "error");
+            return;
+        }
+        postData.Path = $($('#contain .imgReview')[0]).attr("src");
+        postData.listPic = [];
+        for (var i = 0; i < $('#contain .imgReview').length; i++) {
+            postData.listPic.push($($('#contain .imgReview')[i]).attr("src"));
+        }
+        postData.listAttrInfo = tempData.attrInfo;
+        console.log(postData);
+        //var param = '{"F_OwerOrg":"123","F_Name":"123","F_Code":"123","F_POPrice":"123","F_Description":"123","F_IsEnable":true,"__RequestVerificationToken":"k_T6bZ5JOacjirb0B4f95w6hU7f23cTtpRgrkP7vuO0zrU129vgl-QON-3CZc3hThQeNldI9bpmd6_Y05D8LS36T63xAd8TGvzseaDm9WFA1","Path":"http://localhost:14601/Uploads/c2e75805-b66c-4a11-9add-c78f3f4f4cba.png","listPic":["http://localhost:14601/Uploads/c2e75805-b66c-4a11-9add-c78f3f4f4cba.png"],"listAttrInfo":[{"ID":"1","Value":"大小","son":["123"]}]}';
+        var param = JSON.stringify(postData);
         $.submitForm({
-            url: "/SystemManage/Role/SubmitForm?keyValue=" + keyValue,
-            param: postData,
+            url: "/Shop/ItemMaster/SubmitForm?keyValue=" + keyValue,
+            param: param,
+            contentType:"application/json",
+            dataType: "json",
             success: function () {
                 $.currentWindow().$("#gridList").trigger("reloadGrid");
             }
         });
     }
 </script>
+<script>
+    $(function () {
+            $("#file_upload").uploadify({
+                //指定swf文件
+                'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")',
+                //后台处理的页面
+                'uploader': '/Pic/Upload',
+                //按钮显示的文字
+                'buttonText': '上传图片',
+                //显示的高度和宽度，默认 height 30；width 120
+                'height': 30,
+                'width': 120,
+                //上传文件的类型  默认为所有文件    'All Files'  ;  '*.*'
+                //在浏览窗口底部的文件类型下拉菜单中显示的文本
+                'fileTypeDesc': 'Image Files',
+                //允许上传的文件后缀
+                'fileTypeExts': '*.gif; *.jpg; *.png',
+                //发送给后台的其他参数通过formData指定
+                //'formData': { 'someKey': 'someValue', 'someOtherKey': 1 },
+                //上传文件页面中，你想要用来作为文件队列的元素的id, 默认为false  自动生成,  不带#
+                //'queueID': 'fileQueue',
+                //选择文件后自动上传
+                'auto': true,
+                //设置为true将允许多文件上传
+                'multi': true,
+                //上传完成后执行
+               'onUploadSuccess': function (file, data, response) {
+                    var a = jQuery.parseJSON(data);
+                    if (a.Success) {
+                        var contain = document.getElementById("contain");
+                        var li = document.createElement("li");
+                        var div = document.createElement("div");
+                        $(div).addClass("imgDiv");
+                        var img = document.createElement("img");
+                        img.src = a.SaveName;
+                        $(img).addClass("imgReview");
+                        var a = document.createElement("a");
+                        var imgDel = document.createElement("img");
+                        imgDel.src = "../../Content/img/删除.png";
+                        $(imgDel).addClass("delete");
+                        $(a).append(imgDel);                       
+                        $(div).append(img, a);
+                        $(li).append(div);
+                        
+                        contain.append(li);
+                        init();
+                    }
+                    else {
+                        alert("导入图片失败：" + a.Message);
+                    }
+                },
+                'onSelect': function (file) {
+                    //alert('The file ' + file.name + ' was added to the queue.');
+                },
+                'onComplete': function (event, queueID, fileObj, response, data) {
+                    //$('#image').attr("src", response);
+                    //$('#image').show();
+                    //$('#photo').attr("value", response);
+                }
+            });
+    });   
+    function init() {
+        $(".imgDiv").mouseenter(function () {
+            $(this).find(".delete").show();
+
+        });
+
+
+        $(".imgDiv").mouseleave(function () {
+            $(this).find(".delete").hide();
+        });
+        $(".delete").mouseup(function () {
+            $(this).parents("li").remove();
+        });
+    }
+
+</script>
 <form id="form1">
     <div class="widget-body">
         <div id="wizard" class="wizard" data-target="#wizard-steps" style="border-left: none; border-top: none; border-right: none;">
             <ul class="steps">
-                <li data-target="#step-1" class="active"><span class="step">1</span>角色信息<span class="chevron"></span></li>
-                <li data-target="#step-2"><span class="step">2</span>功能权限<span class="chevron"></span></li>
+                <li data-target="#step-1" class="active"><span class="step">1</span><span>商品信息</span><span class="chevron"></span></li>
+                <li data-target="#step-2"><span class="step">2</span><span>图片</span><span class="chevron"></span></li>
             </ul>
         </div>
         <div class="step-content" id="wizard-steps" style="border-left: none; border-bottom: none; border-right: none;">
             <div class="step-pane active" id="step-1" style="margin: 10px; margin-bottom: 0px;">
-                <div class="alert alert-danger" style="text-align: left; margin-bottom: 10px;">
-                    <i class="fa fa-warning alert-dismissible" style="position: relative; top: 1px; font-size: 15px; padding-right: 5px;"></i>
-                    请填写角色信息，用于创建或修改角色信息！
-                </div>
+                @*<div class="alert alert-danger" style="text-align: left; margin-bottom: 10px;">
+                        <i class="fa fa-warning alert-dismissible" style="position: relative; top: 1px; font-size: 15px; padding-right: 5px;"></i>
+                        请填写角色信息，用于创建或修改角色信息！
+                    </div>*@
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">表单信息</h3>
+                        <h3 class="panel-title">商品信息</h3>
                     </div>
                     <div class="panel-body" style="width: 98%;">
                         <table class="form">
                             <tr>
-                                <th class="formTitle">归属组织</th>
-                                <td class="formValue">
-                                    <select id="F_OrganizeId" name="F_OrganizeId" class="form-control required"></select>
+                                <th class="formTitle">所属系统</th>
+                                <td class="formValue" colspan="3">
+                                    <select id="F_OwerOrg" name="F_OwerOrg" class="form-control required"></select>
                                 </td>
                             </tr>
                             <tr>
-                                <th class="formTitle">角色名称</th>
+                                <th class="formTitle">商品名称</th>
                                 <td class="formValue">
-                                    <input id="F_FullName" name="F_FullName" type="text" class="form-control required" placeholder="请输入角色名称" />
+                                    <input id="F_Name" name="F_Name" type="text" class="form-control required"></input>
+                                </td>
+                                <th class="formTitle">商品编号</th>
+                                <td class="formValue">
+                                    <input id="F_Code" name="F_Code" type="text" class="form-control required" placeholder="商品编号" />
                                 </td>
                             </tr>
+                            <tr></tr>
                             <tr>
-                                <th class="formTitle">角色编号</th>
-                                <td class="formValue">
-                                    <input id="F_EnCode" name="F_EnCode" type="text" class="form-control required" placeholder="请输入角色编号" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="formTitle">角色类型</th>
-                                <td class="formValue">
-                                    <select id="F_Type" name="F_Type" class="form-control required"></select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="formTitle">显示顺序</th>
-                                <td class="formValue">
-                                    <input id="F_SortCode" name="F_SortCode" type="text" class="form-control required" placeholder="请输入显示顺序" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="formTitle" style="height: 35px;">选项</th>
-                                <td class="formValue" style="padding-top: 1px;">
-                                    <div class="ckbox">
-                                        <input id="F_AllowEdit" name="F_AllowEdit" type="checkbox"><label for="F_AllowEdit">允许编辑</label>
-                                    </div>
-                                    <div class="ckbox">
-                                        <input id="F_AllowDelete" name="F_AllowDelete" type="checkbox"><label for="F_AllowDelete">允许删除</label>
-                                    </div>
-                                    <div class="ckbox">
-                                        <input id="F_EnabledMark" name="F_EnabledMark" type="checkbox" checked="checked"><label for="F_EnabledMark">有效</label>
-                                    </div>
+                                <th class="formTitle">价格</th>
+                                <td class="formValue" colspan="3">
+                                    <input id="F_POPrice" name="F_POPrice" type="text" class="form-control required" placeholder="价格" />
                                 </td>
                             </tr>
                             <tr>
                                 <th class="formTitle" valign="top" style="padding-top: 5px;">
-                                    备注
+                                    商品标题
                                 </th>
-                                <td class="formValue">
-                                    <textarea id="F_Description" name="F_Description" class="form-control" style="height: 60px;"></textarea>
+                                <td class="formValue" colspan="3">
+                                    <textarea id="F_Description" name="F_Description" class="form-control required" style="height: 60px;" placeholder="用于商品展示标题"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle" style="height: 35px;">是否生效</th>
+                                <td class="formValue" style="padding-top: 1px;">
+                                    <div class="ckbox">
+                                        <input id="F_IsEnable" name="F_IsEnable" type="checkbox" checked><label for="F_IsEnable">生效</label>
+                                    </div>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle" style="height: 35px;">商品特性</th>
+                                <td class="formValue" colspan="3" id="attrContain">
+                                    @*<div class="btn btn-info attr">大小</div>*@
+                                    <div id="addAttr" class="layui-layer-btn0 btn btn-primary" style="font-size:32px;width:45px;height:45px;padding:0px">+</div>
+
                                 </td>
                             </tr>
                         </table>
@@ -144,7 +327,45 @@
                 </div>
             </div>
             <div class="step-pane" id="step-2">
-                <div id="permissionTree"></div>
+                <div id="fileQueue">
+                </div>
+                <input type="file" id="file_upload" name="file_upload" />
+                <div style="height:380px;width:680px;border:1px solid #d4d4d4;margin: auto;">
+                    <ul id="contain" >
+                        @*<li id="123">
+                            <div class="imgDiv">
+                                <img src="http://localhost:14601/Uploads/fe464b50-4bea-48a9-b4dc-44c2f6650dd1.png" />
+                                <a href="#">
+                                    <img src="http://localhost:14601/Uploads/e7f664ab-f3ee-45e6-b30c-372d75741a44.png" class="delete" />
+                                </a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="imgDiv">
+                                <img src="http://localhost:14601/Uploads/e7f664ab-f3ee-45e6-b30c-372d75741a44.png" />
+                                <a href="#">
+                                    <img src="http://localhost:14601/Uploads/e7f664ab-f3ee-45e6-b30c-372d75741a44.png" class="delete" />
+                                </a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="imgDiv">
+                                <img src="http://localhost:14601/Uploads/fe464b50-4bea-48a9-b4dc-44c2f6650dd1.png" />
+                                <a href="#">
+                                    <img src="http://localhost:14601/Uploads/e7f664ab-f3ee-45e6-b30c-372d75741a44.png" class="delete" />
+                                </a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="imgDiv">
+                                <img src="http://localhost:14601/Uploads/e7f664ab-f3ee-45e6-b30c-372d75741a44.png" />
+                                <a href="#">
+                                    <img src="http://localhost:14601/Uploads/e7f664ab-f3ee-45e6-b30c-372d75741a44.png" class="delete" />
+                                </a>
+                            </div>
+                        </li>*@
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="form-button" id="wizard-actions">

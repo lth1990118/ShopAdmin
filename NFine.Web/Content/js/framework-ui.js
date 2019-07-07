@@ -189,6 +189,7 @@ $.submitForm = function (options) {
             data: options.param,
             type: "post",
             dataType: "json",
+            contentType: options.contentType,
             success: function (data) {
                 if (data.state == "success") {
                     options.success(data);

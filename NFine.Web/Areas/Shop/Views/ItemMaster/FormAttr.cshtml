@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "FormAttr";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script>
+    console.log($);
+    $(function () {
+        initControl();
+    })
+    var len = 0;
+    function initControl() {
+        $("#F_Category").bindSelect({
+            url: "/Shop/Category/GetTreeSelectJson",
+        });
+        $('#addAttr').on('click', function (e, data) {
+            appendAttrHtml();
+        })
+        appendAttrHtml();
+    }
+    function appendAttrHtml() {
+        var html = '<tr>';
+        html += '   <th class="formTitle" > 特性值</th>';
+        html += '      <td class="formValue" colspan="3">';
+        html += '       <input id="F_Value' + len + '" name="F_Value' + len +'" type="text" class="form-control required"></input>';
+        html += '   </td>';
+        html += '    </tr > ';
+        $('#Contain').append(html);
+        len++;
+    }
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        //console.log($("#form1").formSerialize());
+       
+        var data = $("#form1").formSerialize();
+        var name = $("#F_Category").find("option:selected").text()
+        var result = {};
+        result = { ID: data.F_Category, Value: name};
+        result.son = [];
+        for (var i = 0; i < len; i++) {
+            result.son.push(data["F_Value" + i]);
+        }
+        console.log(result);
+        return result;
+    }
+
+    function closeForm() {
+        $.modalClose();
+    }
+
+</script>
+
+<form id="form1">
+    <table id="Contain" class="form">
+        <tr>
+            <th class="formTitle">特性</th>
+            <td class="formValue" colspan="3">
+                <select id="F_Category" name="F_Category" class="form-control required"></select>
+            </td>
+        </tr>       
+    </table>
+</form>
+<div id="addAttr" class="layui-layer-btn0 btn-primary" style="font-size:20px;height:30px;margin:0 10px;padding:0px;text-align:center">+</div>

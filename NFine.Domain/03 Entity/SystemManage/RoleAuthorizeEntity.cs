@@ -17,6 +17,6 @@ namespace NFine.Domain.Entity.SystemManage
         public string F_ObjectId { get; set; }
         public int? F_SortCode { get; set; }
         public DateTime? F_CreatorTime { get; set; }
-        public string F_CreatorUserId { get; set; }
+        public int? F_CreatorUserId { get; set; }
     }
 }

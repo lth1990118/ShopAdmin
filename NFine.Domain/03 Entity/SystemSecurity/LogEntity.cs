@@ -22,6 +22,6 @@ namespace NFine.Domain.Entity.SystemSecurity
         public bool? F_Result { get; set; }
         public string F_Description { get; set; }
         public DateTime? F_CreatorTime { get; set; }
-        public string F_CreatorUserId { get; set; }
+        public int? F_CreatorUserId { get; set; }
     }
 }

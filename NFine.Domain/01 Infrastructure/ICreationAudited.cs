@@ -10,7 +10,7 @@ namespace NFine.Domain
 {
     public interface ICreationAudited
     {
-        string F_CreatorUserId { get; set; }
+        int? F_CreatorUserId { get; set; }
         DateTime? F_CreatorTime { get; set; }
     }
 }

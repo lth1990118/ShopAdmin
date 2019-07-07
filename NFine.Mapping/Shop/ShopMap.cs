@@ -26,12 +26,21 @@ namespace NFine.Mapping.Shop
             this.HasKey(t => t.SysCode);
         }
     }
+    public class CategoryMap : EntityTypeConfiguration<CategoryEntity>
+    {
+        public CategoryMap()
+        {
+            this.ToTable("CBO_Category");
+            this.HasKey(t => t.F_ID);
+        }
+
+    }
     public class ItemMasterMap : EntityTypeConfiguration<ItemMasterEntity>
     {
         public ItemMasterMap()
         {
             this.ToTable("CBO_ItemMaster");
-            this.HasKey(t => t.F_ID);
+            this.HasKey(t => t.F_Id);
         }
         
     }
@@ -40,7 +49,7 @@ namespace NFine.Mapping.Shop
         public ItemMasterPicMap()
         {
             this.ToTable("CBO_ItemMasterPic");
-            this.HasKey(t => t.F_ID);
+            this.HasKey(t => t.F_Id);
         }
 
     }

@@ -20,7 +20,7 @@ namespace NFine.Domain
                 var LoginInfo = OperatorProvider.Provider.GetCurrent();
                 if (LoginInfo != null)
                 {
-                    entity.F_CreatorUserId = LoginInfo.UserId.ToString();
+                    entity.F_CreatorUserId = LoginInfo.UserId;
                 }
                 entity.F_CreatorTime = DateTime.Now;
             }
@@ -33,7 +33,7 @@ namespace NFine.Domain
                 var LoginInfo = OperatorProvider.Provider.GetCurrent();
                 if (LoginInfo != null)
                 {
-                    entity.F_LastModifyUserId = LoginInfo.UserId.ToString();
+                    entity.F_LastModifyUserId = LoginInfo.UserId;
                 }
                 entity.F_LastModifyTime = DateTime.Now;
             }
@@ -46,7 +46,7 @@ namespace NFine.Domain
                 var LoginInfo = OperatorProvider.Provider.GetCurrent();
                 if (LoginInfo != null)
                 {
-                    entity.F_DeleteUserId = LoginInfo.UserId.ToString();
+                    entity.F_DeleteUserId = LoginInfo.UserId;
                 }
                 entity.F_DeleteTime = DateTime.Now;
                 entity.F_DeleteMark = true;

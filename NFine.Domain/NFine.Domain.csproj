@@ -48,7 +48,7 @@
     <Compile Include="03 Entity\Shop\ItemMasterEntity.cs" />
     <Compile Include="03 Entity\Shop\ItemMasterPicEntity.cs" />
     <Compile Include="03 Entity\Shop\SaleEntity.cs" />
-    <Compile Include="03 Entity\Shop\STAppSysEntity.cs" />
+    <Compile Include="03 Entity\Shop\ShopEntity.cs" />
     <Compile Include="03 Entity\SystemManage\AreaEntity.cs" />
     <Compile Include="03 Entity\SystemManage\ModuleButtonEntity.cs" />
     <Compile Include="03 Entity\SystemManage\ModuleEntity.cs" />

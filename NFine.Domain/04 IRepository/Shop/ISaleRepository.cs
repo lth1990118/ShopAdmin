@@ -19,6 +19,10 @@ namespace NFine.Domain.IRepository.Shop
     }
     public interface IItemMasterRepository : IRepositoryBase<ItemMasterEntity>
     {
+        void SubmitForm(ItemMasterEntity itemMaster, List<ItemMasterPicEntity> itemMasterPic, string keyValue);
+    }
+    public interface ICategoryRepository : IRepositoryBase<CategoryEntity>
+    {
 
     }
 }

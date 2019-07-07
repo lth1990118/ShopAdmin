@@ -5,53 +5,38 @@
 <link href="~/Content/uploadify/uploadify.css" rel="stylesheet" />
 <script src="~/Content/js/jquery/jquery-2.1.1.min.js"></script>
 <script src="~/Content/uploadify/jquery.uploadify-3.1.min.js"></script>
+<style>
+
+    li {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        border: solid 1px #eee;
+    }
+
+    .imgDiv > img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .imgDiv {
+        display: inline-block;
+        position: relative;
+    }
+
+        .imgDiv .delete {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 20px;
+            height: 20px;
+            display: none;
+        }
+</style>
 <script type="text/javascript">
-        $(function () {
-            $("#file_upload").uploadify({
-                //指定swf文件
-                'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")',
-                //后台处理的页面
-                'uploader': '/Pic/Upload',
-                //按钮显示的文字
-                'buttonText': '上传图片',
-                //显示的高度和宽度，默认 height 30；width 120
-                'height': 80,
-                'width': 80,
-                //上传文件的类型  默认为所有文件    'All Files'  ;  '*.*'
-                //在浏览窗口底部的文件类型下拉菜单中显示的文本
-                'fileTypeDesc': 'Image Files',
-                //允许上传的文件后缀
-                'fileTypeExts': '*.gif; *.jpg; *.png',
-                //发送给后台的其他参数通过formData指定
-                //'formData': { 'someKey': 'someValue', 'someOtherKey': 1 },
-                //上传文件页面中，你想要用来作为文件队列的元素的id, 默认为false  自动生成,  不带#
-                //'queueID': 'fileQueue',
-                //选择文件后自动上传
-                'auto': false,
-                //设置为true将允许多文件上传
-                'multi': true,
-                //上传完成后执行
-               'onUploadSuccess': function (file, data, response) {
-                    var a = jQuery.parseJSON(data);
-                    if (a.Success) {
-                        $.dialog.alert(a.Message);
-                    }
-                    else {
-                        $.dialog.alert("导入提单成本费用异常：" + a.Message);
-                    }
-                },
-                'onSelect': function (file) {
-                    alert('The file ' + file.name + ' was added to the queue.');
-                },
-                'onComplete': function (event, queueID, fileObj, response, data) {
-                    $('#image').attr("src", response);
-                    $('#image').show();
-                    $('#photo').attr("value", response);
-                }
-            });
-    });
+
     function reviewUploadImg(obj) {
-        
+
         for (var i = 0; i < obj.files.length; i++) {
             var file = obj.files[i];
             console.log(obj); console.log(file);
@@ -92,6 +77,8 @@
             'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")', //指定swf文件
             'uploader': '/pic/Upload',//后台处理的页面
             'onUploadSuccess': function (file, data, response) {
+
+                console.log(1);
                 eval("data=" + data);
                 alert('文件 ' + file.name + ' 已经上传成功，并返回 ' + response + ' 保存文件名称为 ' + data.SaveName);
             }
@@ -101,27 +88,174 @@
         $("#file_upload").uploadify({
             'swf'      : '@Url.Content("~/Content/uploadify/uploadify.swf")',
             'uploader' :  '/pic/Upload',
-            'onQueueComplete' : function(queueData) {
+            'onQueueComplete': function (queueData) {
+                console.log(2);
                 alert(queueData.uploadsSuccessful + ' files were successfully uploaded.');
             }
         });
-    });
+    });*@
     $(function() {
         $("#file_upload").uploadify({
-             'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")', //指定swf文件
-            'uploader': '/pic/Upload',//后台处理的页面
-             'onUploadComplete' : function(file) {
-                alert('The file ' + file.name + ' finished processing.');
+            //指定swf文件
+            'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")',
+            //后台处理的页面
+            'uploader': '/Pic/Upload',
+            //按钮显示的文字
+            'buttonText': '上传图片',
+            //显示的高度和宽度，默认 height 30；width 120
+            'height': 30,
+            'width': 80,
+            //上传文件的类型  默认为所有文件    'All Files'  ;  '*.*'
+            //在浏览窗口底部的文件类型下拉菜单中显示的文本
+            'fileTypeDesc': 'Image Files',
+            //允许上传的文件后缀
+            'fileTypeExts': '*.gif; *.jpg; *.png',
+            //发送给后台的其他参数通过formData指定
+            //'formData': { 'someKey': 'someValue', 'someOtherKey': 1 },
+            //上传文件页面中，你想要用来作为文件队列的元素的id, 默认为false  自动生成,  不带#
+            //'queueID': 'fileQueue',
+            //选择文件后自动上传
+            'auto': true,
+            //设置为true将允许多文件上传
+            'multi': true,
+            //上传完成后执行
+            'onUploadSuccess': function (file, data, response) {
+                var a = jQuery.parseJSON(data);
+                if (a.Success) {
+                    var contain = document.getElementById("contain")
+                    var img = document.createElement("img");
+                    img.height = 100;
+                    img.width = 100;
+                    img.src = a.SaveName;
+                    contain.appendChild(img);
+                }
+                else {
+                    alert("导入图片失败：" + a.Message);
+                }
             }
         });
+    });
+     @*$(function () {
+            $("#file_upload").uploadify({
+                //指定swf文件
+                'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")',
+                //后台处理的页面
+                'uploader': '/Pic/Upload',
+                //按钮显示的文字
+                'buttonText': '上传图片',
+                //显示的高度和宽度，默认 height 30；width 120
+                'height': 30,
+                'width': 80,
+                //上传文件的类型  默认为所有文件    'All Files'  ;  '*.*'
+                //在浏览窗口底部的文件类型下拉菜单中显示的文本
+                'fileTypeDesc': 'Image Files',
+                //允许上传的文件后缀
+                'fileTypeExts': '*.gif; *.jpg; *.png',
+                //发送给后台的其他参数通过formData指定
+                //'formData': { 'someKey': 'someValue', 'someOtherKey': 1 },
+                //上传文件页面中，你想要用来作为文件队列的元素的id, 默认为false  自动生成,  不带#
+                //'queueID': 'fileQueue',
+                //选择文件后自动上传
+                'auto': true,
+                //设置为true将允许多文件上传
+                'multi': true,
+                //上传完成后执行
+                'onUploadSuccess': function (file, data, response) {
+                    console.log(0);
+                    var a = jQuery.parseJSON(data);
+                    if (a.Success) {
+                        //$.dialog.alert(a.Message);
+                    }
+                    else {
+                        //$.dialog.alert("导入提单成本费用异常：" + a.Message);
+                    }
+                }
+                //,
+                //'onSelect': function (file) {
+                //    //alert('The file ' + file.name + ' was added to the queue.');
+                //},
+                //'onComplete': function (event, queueID, fileObj, response, data) {
+                //    $('#image').attr("src", response);
+                //    $('#image').show();
+                //    $('#photo').attr("value", response);
+                //}
+            });
     });*@
+</script>
+<script type="text/javascript">
+    $(document).ready(init);
+    function init() {
+        $(".imgDiv").mouseenter(function () {
+            $(this).find(".delete").show();
+
+        });
+
+
+        $(".imgDiv").mouseleave(function () {
+            $(this).find(".delete").hide();
+        });
+
+    }
+
+
+
 </script>
 <div>
     @*用来作为文件队列区域*@
     <div id="fileQueue">
     </div>
-    <input type="file" id="file_upload" onchange="reviewUploadImg(this)" name="file_upload" />
-    <div id="contain" style="height:500px;width:500px;border:1px solid red"></div>
+    <input type="file" id="file_upload" name="file_upload" />
+    <div id="contain" style="height:380px;width:680px;border:1px solid #d4d4d4;margin: auto;">
+        <ul>
+            <li>
+                <div class="imgDiv">
+                    <img src="http://localhost:14601/Uploads/fe464b50-4bea-48a9-b4dc-44c2f6650dd1.png" />
+                    <a href="#">
+                        <img src="http://localhost:14601/Uploads/e7f664ab-f3ee-45e6-b30c-372d75741a44.png" class="delete" />
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div class="imgDiv">
+                    <img src="http://localhost:14601/Uploads/e7f664ab-f3ee-45e6-b30c-372d75741a44.png" />
+                    <a href="#">
+                        <img src="http://localhost:14601/Uploads/e7f664ab-f3ee-45e6-b30c-372d75741a44.png" class="delete" />
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div class="imgDiv">
+                    <img src="http://localhost:14601/Uploads/fe464b50-4bea-48a9-b4dc-44c2f6650dd1.png" />
+                    <a href="#">
+                        <img src="http://localhost:14601/Uploads/e7f664ab-f3ee-45e6-b30c-372d75741a44.png" class="delete" />
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div class="imgDiv">
+                    <img src="http://localhost:14601/Uploads/e7f664ab-f3ee-45e6-b30c-372d75741a44.png" />
+                    <a href="#">
+                        <img src="http://localhost:14601/Uploads/e7f664ab-f3ee-45e6-b30c-372d75741a44.png" class="delete" />
+                    </a>
+                </div>
+            </li>
+            @*<li><img src="http://localhost:14601/Uploads/fe464b50-4bea-48a9-b4dc-44c2f6650dd1.png"></li>
+        <li><img src="http://localhost:14601/Uploads/fe464b50-4bea-48a9-b4dc-44c2f6650dd1.png"></li>
+        <li><img src="http://localhost:14601/Uploads/fe464b50-4bea-48a9-b4dc-44c2f6650dd1.png"></li>
+        <li><img src="http://localhost:14601/Uploads/fe464b50-4bea-48a9-b4dc-44c2f6650dd1.png"></li>
+        <li><img src="http://localhost:14601/Uploads/fe464b50-4bea-48a9-b4dc-44c2f6650dd1.png"></li>
+        <li><img src="http://localhost:14601/Uploads/fe464b50-4bea-48a9-b4dc-44c2f6650dd1.png"></li>
+        <li><img src="http://localhost:14601/Uploads/fe464b50-4bea-48a9-b4dc-44c2f6650dd1.png"></li>*@
+        </ul>
+        @*<img height="100" width="100" src="http://localhost:14601/Uploads/fe464b50-4bea-48a9-b4dc-44c2f6650dd1.png">
+            <img height="100" width="100" src="http://localhost:14601/Uploads/e7f664ab-f3ee-45e6-b30c-372d75741a44.png">*@
+    </div>
+    <div class="imgDiv">
+        <img src="http://localhost:14601/Uploads/fe464b50-4bea-48a9-b4dc-44c2f6650dd1.png" />
+        <a href="#">
+            <img src="http://localhost:14601/Uploads/e7f664ab-f3ee-45e6-b30c-372d75741a44.png" class="delete" />
+        </a>
+    </div>
     <p>
         <a href="javascript:$('#file_upload').uploadify('upload');">上传第一个</a>
         <a href="javascript:$('#file_upload').uploadify('upload','*');">上传队列</a>

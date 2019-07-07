@@ -123,6 +123,7 @@
     <Compile Include="Areas\ReportManage\Controllers\EchartsController.cs" />
     <Compile Include="Areas\ReportManage\Controllers\HighchartsController.cs" />
     <Compile Include="Areas\ReportManage\ReportManageAreaRegistration.cs" />
+    <Compile Include="Areas\Shop\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Shop\Controllers\ItemMasterController.cs" />
     <Compile Include="Areas\Shop\Controllers\SaleController.cs" />
     <Compile Include="Areas\Shop\Controllers\STAppSysController.cs" />
@@ -195,6 +196,7 @@
     <Content Include="Content\img\wechat.jpg" />
     <Content Include="Content\img\weipayimg.png" />
     <Content Include="Content\img\weixin_nfine.png" />
+    <Content Include="Content\img\删除.png" />
     <Content Include="Content\js\bootstrap\bootstrap.js" />
     <Content Include="Content\js\bootstrap\bootstrap.min.css" />
     <Content Include="Content\js\charts\Chart.js" />
@@ -630,6 +632,9 @@
     <Content Include="Areas\Shop\Views\STAppSys\Form.cshtml" />
     <Content Include="Areas\Shop\Views\ItemMaster\Form.cshtml" />
     <Content Include="Areas\Shop\Views\ItemMaster\Index.cshtml" />
+    <Content Include="Areas\Shop\Views\Category\Index.cshtml" />
+    <Content Include="Areas\Shop\Views\Category\Form.cshtml" />
+    <Content Include="Areas\Shop\Views\ItemMaster\FormAttr.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\NFine.Framework.Release.pubxml" />
     <Content Include="Views\Pic\Index.cshtml" />

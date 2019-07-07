@@ -13,7 +13,22 @@ namespace NFine.Web.Areas.Shop.Controllers
     {
         private STAppSysApp business = new STAppSysApp();
 
-        
+        [HttpGet]
+        //[HandlerAjaxOnly]
+        public ActionResult GetTreeSelectJson()
+        {
+            var data = business.GetList();
+            var treeList = new List<TreeSelectModel>();
+            foreach (STAppSysEntity item in data)
+            {
+                TreeSelectModel treeModel = new TreeSelectModel();
+                treeModel.id = item.SysCode;
+                treeModel.text = item.SysNameCN;
+                treeModel.data = item;
+                treeList.Add(treeModel);
+            }
+            return Content(treeList.ToJson());
+        }
         [HttpGet]
         [HandlerAjaxOnly]
         public ActionResult GetGridJson(Pagination pagination, string keyword)

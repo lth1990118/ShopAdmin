@@ -34,8 +34,8 @@ namespace NFine.Web.Controllers
                     string saveName = Guid.NewGuid().ToString() + fileExtension; // 保存文件名称
 
                     fileData.SaveAs(filePath + saveName);
-
-                    return Json(new { Success = true, FileName = fileName, SaveName = saveName });
+                    string path = System.Configuration.ConfigurationManager.AppSettings["PicPath"].ToString();
+                    return Json(new { Success = true, FileName = fileName, SaveName = path + saveName });
                 }
                 catch (Exception ex)
                 {

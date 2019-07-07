@@ -24,15 +24,15 @@
                     }
                 },
                 {
-                    label: '主图', name: 'F_Path', width: 120, align: 'center',
+                    label: '主图', name: 'F_Path', width: 120,  align: 'center',
                     formatter: function (cellvalue) {
-                        return '<img alt="" src="' + cellvalue+'">';
+                        return '<img alt="" height=120 src="http://localhost:14601/Uploads/3d52ac47-897a-41ab-bd46-6cc7816549db.png">';
                     }
                 },
                 { label: '描述', name: 'F_Desc', width: 200, align: 'left' }
             ],
             pager: "#gridPager",
-            sortname: 'CreateTime desc',
+            sortname: 'F_CreatorTime desc',
             viewrecords: true
         });
         $("#btn_search").click(function () {
@@ -47,7 +47,7 @@
             title: "新增商品信息",
             url: "/Shop/ItemMaster/Form",
             width: "700px",
-            height: "310px",
+            height: "600px",
             callBack: function (iframeId) {
                 top.frames[iframeId].submitForm();
             }
